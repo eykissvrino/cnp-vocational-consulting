@@ -1,0 +1,53 @@
+@import "tailwindcss";
+
+/* ===== 주황 메인 + 화이트 기조 컬러 시스템 ===== */
+@theme {
+  --color-primary: #E88124;
+  --color-primary-light: #F5A623;
+  --color-primary-dark: #C0611A;
+  --color-primary-bg: #FFF8F0;
+  --color-primary-bg-alt: #FEF3E7;
+  --color-navy: #1A1A2E;
+  --color-green: #1B5E3B;
+  --color-green-light: #2D7A50;
+  --color-surface: #FAFAFA;
+  --color-surface-warm: #F4F1EC;
+  --color-border: #E5E7EB;
+  --color-text: #1A1A2E;
+  --color-text-muted: #6B7280;
+
+  --font-sans: 'Noto Sans KR', 'Inter', sans-serif;
+}
+
+/* ===== Base ===== */
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  color: var(--color-text);
+  font-family: var(--font-sans);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* ===== Selection ===== */
+::selection {
+  background-color: var(--color-primary-bg-alt);
+  color: var(--color-primary-dark);
+}
+
+/* ===== Scrollbar ===== */
+::-webkit-scrollbar {
+  width: 8px;
+}
+::-webkit-scrollbar-track {
+  background: var(--color-surface);
+}
+::-webkit-scrollbar-thumb {
+  background: var(--color-border);
+  border-radius: 4px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: var(--color-text-muted);
+}
