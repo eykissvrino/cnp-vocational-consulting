@@ -1,16 +1,11 @@
 import type { Metadata } from 'next';
-import { HRM_SERVICE, HRM_PAIN_POINTS } from '@/lib/constants';
+import { HRM_SERVICE, HRM_PAIN_POINTS, PORTFOLIO_PROJECTS } from '@/lib/constants';
 import ServiceHero from '@/components/services/ServiceHero';
 import SolutionCard from '@/components/services/SolutionCard';
 import ProcessTimeline from '@/components/services/ProcessTimeline';
 import ServiceStats from '@/components/services/ServiceStats';
 import ServiceCTA from '@/components/services/ServiceCTA';
-import {
-  AlertTriangle,
-  FileWarning,
-  Clock,
-  Info,
-} from 'lucide-react';
+import { getIcon } from '@/lib/icons';
 
 export const metadata: Metadata = {
   title: 'HRM 컨설팅 — 직무중심 인사관리',
@@ -18,11 +13,7 @@ export const metadata: Metadata = {
     '공공기관 직무분석, 직무평가, 직무급 전환, 성과관리체계 구축. 기재부 직무급 가이드라인 기반 체계적 전환 지원.',
 };
 
-const painIconMap: Record<string, React.ComponentType<{ className?: string }>> = {
-  AlertTriangle,
-  FileWarning,
-  Clock,
-};
+const relatedProjects = PORTFOLIO_PROJECTS.filter((p) => p.category === 'HRM').slice(0, 3);
 
 export default function HRMPage() {
   return (
@@ -30,34 +21,48 @@ export default function HRMPage() {
       {/* Hero */}
       <ServiceHero
         tag={HRM_SERVICE.tag}
-        tagColor={HRM_SERVICE.tagColor}
-        team={HRM_SERVICE.team}
+        tagColor="navy"
         title={HRM_SERVICE.title}
         subtitle={HRM_SERVICE.subtitle}
         description={HRM_SERVICE.description}
-        breadcrumbService="HRM 컨설팅"
       />
+
+      {/* 기재부 가이드라인 */}
+      <section className="py-6 bg-navy">
+        <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="flex items-center gap-4 justify-center text-center">
+            <div className="w-1 h-12 bg-primary rounded-full hidden sm:block" />
+            <div>
+              <p className="text-white/60 text-xs uppercase tracking-widest mb-1">기획재정부 가이드라인 기반</p>
+              <p className="text-white text-lg font-light">직무급 전환의 <span className="font-semibold text-primary-light">체계적 설계와 안착</span>을 지원합니다</p>
+            </div>
+          </div>
+        </div>
+      </section>
 
       {/* Pain Points */}
       <section className="py-20 bg-surface">
         <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-12">
-            <h2 className="text-2xl md:text-3xl font-bold text-navy mb-3">
+            <p className="label-caps text-text-muted mb-3">공통 과제</p>
+            <h2 className="text-3xl lg:text-4xl font-light tracking-tight text-navy">
               이런 고민이 있으신가요?
             </h2>
-            <p className="text-text-muted">많은 공공기관이 직면한 인사관리의 공통 과제입니다</p>
+            <p className="mt-3 text-text-muted max-w-xl mx-auto">
+              많은 공공기관이 직면한 인사관리의 공통 과제입니다
+            </p>
           </div>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
             {HRM_PAIN_POINTS.map((point) => {
-              const IconComponent = painIconMap[point.icon];
+              const IconComponent = getIcon(point.icon);
               return (
                 <div
                   key={point.title}
-                  className="bg-white rounded-xl p-6 border border-border shadow-sm text-center"
+                  className="bg-white rounded-xl p-8 border border-border"
                 >
-                  <div className="w-14 h-14 bg-primary/10 rounded-full flex items-center justify-center mx-auto mb-4">
+                  <div className="w-12 h-12 bg-amber-50 rounded-lg flex items-center justify-center mb-5">
                     {IconComponent && (
-                      <IconComponent className="w-7 h-7 text-primary" />
+                      <IconComponent className="w-6 h-6 text-amber-600" />
                     )}
                   </div>
                   <h3 className="font-semibold text-navy mb-2">{point.title}</h3>
@@ -73,12 +78,10 @@ export default function HRMPage() {
       <section className="py-20 bg-white">
         <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-12">
-            <h2 className="text-2xl md:text-3xl font-bold text-navy mb-3">
-              시앤피컨설팅의 솔루션
+            <p className="label-caps text-text-muted mb-3">솔루션</p>
+            <h2 className="text-3xl lg:text-4xl font-light tracking-tight text-navy">
+              시앤피컨설팅의 HRM 솔루션
             </h2>
-            <p className="text-text-muted">
-              직무 중심 인사혁신을 위한 4가지 핵심 서비스
-            </p>
           </div>
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
             {HRM_SERVICE.items.map((item) => (
@@ -87,6 +90,9 @@ export default function HRMPage() {
                 icon={item.icon}
                 title={item.title}
                 description={item.description}
+                methodology={item.methodology}
+                deliverables={item.deliverables}
+                color="navy"
               />
             ))}
           </div>
@@ -94,46 +100,58 @@ export default function HRMPage() {
       </section>
 
       {/* Process */}
-      <section className="py-20 bg-primary-bg">
+      <section className="py-20 bg-surface">
         <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-12">
-            <h2 className="text-2xl md:text-3xl font-bold text-navy mb-3">컨설팅 프로세스</h2>
-            <p className="text-text-muted">검증된 4단계 방법론으로 성공적인 전환을 지원합니다</p>
+            <p className="label-caps text-text-muted mb-3">프로세스</p>
+            <h2 className="text-3xl lg:text-4xl font-light tracking-tight text-navy">
+              컨설팅 진행 과정
+            </h2>
+            <p className="mt-3 text-text-muted">검증된 4단계 방법론으로 성공적인 전환을 지원합니다</p>
           </div>
           <ProcessTimeline steps={HRM_SERVICE.process} />
         </div>
       </section>
 
       {/* Stats */}
-      <section className="py-20 bg-white">
-        <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="text-center mb-12">
-            <h2 className="text-2xl md:text-3xl font-bold text-navy mb-3">실적으로 증명합니다</h2>
-            <p className="text-text-muted">15년 이상 쌓아온 공공기관 HRM 컨설팅 경험</p>
-          </div>
-          <ServiceStats stats={HRM_SERVICE.stats} />
-        </div>
-      </section>
+      <ServiceStats stats={HRM_SERVICE.stats} color="navy" />
 
-      {/* Reference callout */}
-      <section className="py-10 bg-surface">
-        <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex items-start gap-4 bg-primary/5 border border-primary/20 rounded-xl p-6">
-            <Info className="w-5 h-5 text-primary flex-shrink-0 mt-0.5" />
-            <p className="text-sm text-navy leading-relaxed">
-              <span className="font-semibold">기재부 직무급 가이드라인 기반 지원</span>
-              <br />
-              기획재정부 직무급 가이드라인에 따른 체계적 전환 지원으로, 공공기관의 단계적 직무급
-              도입을 처음부터 끝까지 함께합니다.
-            </p>
+      {/* Related Projects */}
+      {relatedProjects.length > 0 && (
+        <section className="py-20 bg-white">
+          <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div className="text-center mb-12">
+              <p className="label-caps text-text-muted mb-3">사업실적</p>
+              <h2 className="text-3xl lg:text-4xl font-light tracking-tight text-navy">
+                HRM 주요 수행 실적
+              </h2>
+            </div>
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+              {relatedProjects.map((project) => (
+                <div
+                  key={project.id}
+                  className="bg-surface rounded-xl p-6 border border-border"
+                >
+                  <p className="label-caps text-text-light mb-3">{project.period}</p>
+                  <h3 className="font-semibold text-navy mb-1">{project.name}</h3>
+                  <p className="text-text-muted text-sm">{project.client}</p>
+                  {project.overview && (
+                    <p className="mt-3 text-text-muted text-sm leading-relaxed border-t border-border pt-3">
+                      {project.overview}
+                    </p>
+                  )}
+                </div>
+              ))}
+            </div>
           </div>
-        </div>
-      </section>
+        </section>
+      )}
 
+      {/* CTA */}
       <ServiceCTA
-        text="직무분석 컨설팅, 지금 시작하세요"
-        buttonText="직무분석 컨설팅 상담 신청"
+        text={HRM_SERVICE.cta.text}
         href={HRM_SERVICE.cta.href}
+        color="navy"
       />
     </main>
   );

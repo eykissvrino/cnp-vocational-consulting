@@ -11,13 +11,7 @@ interface ProjectTableProps {
 function StatusBadge({ status }: { status: string }) {
   const isDone = status === '완료';
   return (
-    <span
-      className={`inline-flex items-center gap-1 text-xs font-semibold px-2 py-0.5 rounded-full ${
-        isDone
-          ? 'bg-green/10 text-green'
-          : 'bg-primary/10 text-primary'
-      }`}
-    >
+    <span className={`inline-flex items-center gap-1 text-xs font-semibold px-2.5 py-1 rounded-full border ${isDone ? 'border-green-500 text-green-600' : 'border-primary text-primary'}`}>
       {isDone ? <CheckCircle className="w-3 h-3" /> : <Clock className="w-3 h-3" />}
       {status}
     </span>
@@ -25,14 +19,13 @@ function StatusBadge({ status }: { status: string }) {
 }
 
 function CategoryBadge({ category }: { category: string }) {
-  const color =
-    category === 'HRM'
-      ? 'bg-primary/10 text-primary'
-      : category === 'HRD'
-      ? 'bg-green/10 text-green'
-      : 'bg-navy/10 text-navy';
+  const styles: Record<string, string> = {
+    HRM: 'bg-navy text-white',
+    HRD: 'bg-teal text-white',
+    AX: 'bg-slate text-white',
+  };
   return (
-    <span className={`text-xs font-semibold px-2 py-0.5 rounded ${color}`}>
+    <span className={`inline-block text-xs font-semibold px-2.5 py-1 rounded ${styles[category] ?? 'bg-surface text-text-muted'}`}>
       {category}
     </span>
   );
@@ -42,7 +35,7 @@ export default function ProjectTable({ projects, onSelect }: ProjectTableProps) 
   if (projects.length === 0) {
     return (
       <div className="text-center py-16 text-text-muted">
-        해당 조건의 사업 실적이 없습니다.
+        해당 카테고리의 프로젝트가 없습니다
       </div>
     );
   }
@@ -58,7 +51,7 @@ export default function ProjectTable({ projects, onSelect }: ProjectTableProps) 
               <th className="text-left px-4 py-3 font-semibold">사업명</th>
               <th className="text-left px-4 py-3 font-semibold">발주기관</th>
               <th className="text-left px-4 py-3 font-semibold">수행기간</th>
-              <th className="text-left px-4 py-3 font-semibold">서비스유형</th>
+              <th className="text-left px-4 py-3 font-semibold">유형</th>
               <th className="text-left px-4 py-3 font-semibold">상태</th>
             </tr>
           </thead>
@@ -73,19 +66,15 @@ export default function ProjectTable({ projects, onSelect }: ProjectTableProps) 
                 <td className="px-4 py-3 font-medium text-text">{project.name}</td>
                 <td className="px-4 py-3 text-text-muted">{project.client}</td>
                 <td className="px-4 py-3 text-text-muted whitespace-nowrap">{project.period}</td>
-                <td className="px-4 py-3">
-                  <CategoryBadge category={project.category} />
-                </td>
-                <td className="px-4 py-3">
-                  <StatusBadge status={project.status} />
-                </td>
+                <td className="px-4 py-3"><CategoryBadge category={project.category} /></td>
+                <td className="px-4 py-3"><StatusBadge status={project.status} /></td>
               </tr>
             ))}
           </tbody>
         </table>
       </div>
 
-      {/* Mobile Card List */}
+      {/* Mobile Cards */}
       <div className="md:hidden space-y-3">
         {projects.map((project) => (
           <div
@@ -97,8 +86,8 @@ export default function ProjectTable({ projects, onSelect }: ProjectTableProps) 
               <h3 className="text-sm font-semibold text-text leading-snug flex-1">{project.name}</h3>
               <StatusBadge status={project.status} />
             </div>
-            <p className="text-xs text-text-muted mb-1">{project.client}</p>
-            <div className="flex items-center gap-2 mt-2">
+            <p className="text-xs text-text-muted mb-2">{project.client}</p>
+            <div className="flex items-center gap-2">
               <CategoryBadge category={project.category} />
               <span className="text-xs text-text-muted">{project.period}</span>
             </div>

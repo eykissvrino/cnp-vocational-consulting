@@ -1,29 +1,44 @@
-'use client';
+"use client";
 
 import { useState, useEffect, useRef } from "react";
 import Link from "next/link";
+import { motion, AnimatePresence } from "framer-motion";
 import { Menu, ChevronDown } from "lucide-react";
-import { NAV_ITEMS } from "@/lib/constants";
+import { COMPANY, NAV_ITEMS } from "@/lib/constants";
 import type { NavItem } from "@/types";
 import MobileMenu from "./MobileMenu";
 
-function DropdownMenu({ items }: { items: NavItem[] }) {
+function ServicesDropdown({ items }: { items: NavItem[] }) {
   return (
-    <div className="absolute top-full left-1/2 -translate-x-1/2 mt-2 w-48 bg-white border border-border rounded-xl shadow-lg py-2 z-50">
-      {items.map((item) => (
-        <Link
-          key={item.href}
-          href={item.href}
-          className="block px-4 py-2.5 text-sm text-navy hover:bg-primary-bg hover:text-primary transition-colors"
-        >
-          {item.label}
-        </Link>
-      ))}
-    </div>
+    <motion.div
+      initial={{ opacity: 0, y: 8 }}
+      animate={{ opacity: 1, y: 0 }}
+      exit={{ opacity: 0, y: 8 }}
+      transition={{ duration: 0.15, ease: "easeOut" }}
+      className="absolute top-full left-1/2 -translate-x-1/2 mt-3 w-52 bg-white border border-gray-100 shadow-xl z-50"
+    >
+      <div className="py-1">
+        {items.map((item) => (
+          <Link
+            key={item.href}
+            href={item.href}
+            className="block px-5 py-3 text-sm text-text hover:bg-surface hover:text-navy transition-colors border-b border-gray-50 last:border-0"
+          >
+            {item.label}
+          </Link>
+        ))}
+      </div>
+    </motion.div>
   );
 }
 
-function NavItemComponent({ item }: { item: NavItem }) {
+function NavItemComponent({
+  item,
+  scrolled,
+}: {
+  item: NavItem;
+  scrolled: boolean;
+}) {
   const [open, setOpen] = useState(false);
   const ref = useRef<HTMLDivElement>(null);
 
@@ -38,20 +53,30 @@ function NavItemComponent({ item }: { item: NavItem }) {
     return () => document.removeEventListener("mousedown", handler);
   }, [open]);
 
+  const textClass = scrolled
+    ? "text-white/80 hover:text-white"
+    : "text-white/90 hover:text-white";
+
   if (item.children && item.children.length > 0) {
     return (
-      <div ref={ref} className="relative">
+      <div
+        ref={ref}
+        className="relative"
+        onMouseEnter={() => setOpen(true)}
+        onMouseLeave={() => setOpen(false)}
+      >
         <button
-          onClick={() => setOpen((prev) => !prev)}
-          className="flex items-center gap-1 px-3 py-2 text-sm font-medium text-navy hover:text-primary transition-colors rounded-lg hover:bg-primary-bg"
+          className={`flex items-center gap-1 px-4 py-2 text-sm font-medium transition-colors ${textClass}`}
         >
           {item.label}
           <ChevronDown
-            size={15}
+            size={14}
             className={`transition-transform duration-200 ${open ? "rotate-180" : ""}`}
           />
         </button>
-        {open && <DropdownMenu items={item.children} />}
+        <AnimatePresence>
+          {open && <ServicesDropdown items={item.children} />}
+        </AnimatePresence>
       </div>
     );
   }
@@ -59,7 +84,7 @@ function NavItemComponent({ item }: { item: NavItem }) {
   return (
     <Link
       href={item.href}
-      className="px-3 py-2 text-sm font-medium text-navy hover:text-primary transition-colors rounded-lg hover:bg-primary-bg"
+      className={`px-4 py-2 text-sm font-medium transition-colors ${textClass}`}
     >
       {item.label}
     </Link>
@@ -71,61 +96,70 @@ export default function Header() {
   const [mobileOpen, setMobileOpen] = useState(false);
 
   useEffect(() => {
-    const handleScroll = () => setScrolled(window.scrollY > 20);
+    const handleScroll = () => setScrolled(window.scrollY > 40);
+    handleScroll();
     window.addEventListener("scroll", handleScroll, { passive: true });
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
   return (
     <>
-      <header
-        className={`fixed top-0 left-0 right-0 z-40 transition-all duration-300 ${
-          scrolled
-            ? "bg-white/95 backdrop-blur-md shadow-sm border-b border-border"
-            : "bg-transparent"
-        }`}
+      <motion.header
+        className="fixed top-0 left-0 right-0 z-40"
+        animate={{
+          backgroundColor: scrolled
+            ? "rgb(15, 23, 41)"
+            : "rgba(15, 23, 41, 0)",
+          boxShadow: scrolled
+            ? "0 1px 0 rgba(255,255,255,0.08)"
+            : "none",
+        }}
+        transition={{ duration: 0.3, ease: "easeInOut" }}
       >
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex items-center justify-between h-16 lg:h-18">
-            {/* Logo */}
-            <Link href="/" className="flex items-center gap-2 shrink-0">
-              <span className="bg-primary text-white text-xs font-bold px-2 py-1 rounded">
-                직능본부
+        <div className="max-w-7xl mx-auto px-6 lg:px-8">
+          <div className="flex items-center justify-between h-18">
+            {/* 로고 */}
+            <Link href="/" className="flex flex-col shrink-0 group">
+              <span className="text-white font-semibold text-base tracking-tight leading-tight">
+                {COMPANY.name}
               </span>
-              <span className="text-border/60 hidden sm:block">|</span>
-              <span className="hidden sm:block text-sm font-semibold text-navy">
-                시앤피컨설팅
+              <span className="text-white/50 text-xs tracking-widest uppercase font-light">
+                {COMPANY.division}
               </span>
             </Link>
 
-            {/* Desktop Nav */}
-            <nav className="hidden lg:flex items-center gap-1">
+            {/* 데스크톱 네비게이션 */}
+            <nav className="hidden lg:flex items-center">
               {NAV_ITEMS.map((item) => (
-                <NavItemComponent key={item.href} item={item} />
+                <NavItemComponent
+                  key={item.href}
+                  item={item}
+                  scrolled={scrolled}
+                />
               ))}
             </nav>
 
-            {/* Right side */}
-            <div className="flex items-center gap-3">
+            {/* 우측 영역 */}
+            <div className="flex items-center gap-4">
               <Link
                 href="/contact"
-                className="hidden sm:inline-flex items-center gap-2 px-5 py-2.5 bg-primary text-white text-sm font-semibold rounded-lg hover:bg-primary-dark transition-colors"
+                className="hidden sm:inline-flex items-center px-5 py-2 bg-primary text-white text-sm font-medium rounded-md hover:opacity-90 transition-opacity"
               >
-                상담 문의
+                컨설팅 문의
               </Link>
 
-              {/* Mobile hamburger */}
+              {/* 모바일 햄버거 */}
               <button
                 onClick={() => setMobileOpen(true)}
-                className="lg:hidden p-2 rounded-lg text-navy hover:bg-surface transition-colors"
+                className="lg:hidden p-2 text-white/80 hover:text-white transition-colors"
                 aria-label="메뉴 열기"
               >
-                <Menu size={24} />
+                <Menu size={22} />
               </button>
             </div>
           </div>
         </div>
-      </header>
+      </motion.header>
 
       <MobileMenu isOpen={mobileOpen} onClose={() => setMobileOpen(false)} />
     </>

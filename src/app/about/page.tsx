@@ -1,281 +1,265 @@
 'use client';
 
-import { useState } from 'react';
 import Link from 'next/link';
-import { MapPin, Phone, Mail, Clock, Target, Award, Lightbulb, Users, Building2, BrainCircuit, Cpu } from 'lucide-react';
-import { TIMELINE, DIVISIONS, COMPANY } from '@/lib/constants';
+import { motion } from 'framer-motion';
+import { ArrowRight, Users, BookOpen, BrainCircuit, CheckCircle } from 'lucide-react';
+import { COMPANY, HOME_STATS } from '@/lib/constants';
 
-const TABS = [
-  { key: 'intro', label: '본부 소개' },
-  { key: 'company', label: '시앤피컨설팅' },
-  { key: 'history', label: '연혁' },
-  { key: 'location', label: '오시는 길' },
-] as const;
+const SERVICES = [
+  {
+    area: "HRM",
+    title: "HRM 컨설팅",
+    subtitle: "직무중심 인적자원관리",
+    description: "직무분석(DACUM·과업목록법), 직무평가, 보수체계(직무급) 설계, 성과관리체계 구축, 적정인력 산정까지. 공공기관과 민간기업의 직무 중심 인사혁신 전 과정을 수행합니다.",
+    highlights: ["직무분석 및 직무분류체계", "직무평가 및 직급체계 설계", "보수체계(직무급) 전환", "성과관리·조직설계"],
+    icon: <Users className="w-6 h-6" />,
+    color: "var(--color-navy)",
+    bgLight: "rgba(15,23,41,0.06)",
+    href: "/services/hrm",
+  },
+  {
+    area: "HRD",
+    title: "HRD 컨설팅",
+    subtitle: "체계적 인재개발 솔루션",
+    description: "DACUM·CBC 기반 직무분석에서 출발, NCS 교육체계 수립, 역량모델링(BEI), Skill Gap 분석, 경력개발경로(CDP) 설계까지. 이론과 현장을 겸비한 인재개발 전 영역을 설계합니다.",
+    highlights: ["교육체계 수립·교육과정 개발", "역량모델링 및 역량평가", "Skill Gap 분석·러닝패스 설계", "NCS·SQF 개발 전문"],
+    icon: <BookOpen className="w-6 h-6" />,
+    color: "var(--color-teal)",
+    bgLight: "rgba(26,107,114,0.06)",
+    href: "/services/hrd",
+  },
+  {
+    area: "AX",
+    title: "AX 컨설팅",
+    subtitle: "AI Transformation",
+    description: "AI 성숙도 진단(6차원 프레임워크)부터 전략 수립, AX Skill Set 구축, 워크플로우 재설계, AI 교육훈련까지. HRM·HRD 전문성을 기반으로 사람 중심의 AI 전환을 설계합니다.",
+    highlights: ["AX 진단 및 전략수립", "AX Skill Set 구축", "AI 워크플로우 재설계", "AX 교육훈련"],
+    icon: <BrainCircuit className="w-6 h-6" />,
+    color: "var(--color-primary)",
+    bgLight: "rgba(224,123,57,0.06)",
+    href: "/services/ax",
+  },
+];
 
-type TabKey = (typeof TABS)[number]['key'];
+const STRENGTHS = [
+  "한국산업인력공단과 4년 연속 NCS·SQF 사업 수행",
+  "공공기관·민간기업 150+ 프로젝트 수행 실적",
+  "DACUM, BEI, NCS 매핑 등 검증된 방법론 보유",
+  "직무분석부터 역량모델링, 교육체계, AX까지 End-to-End 수행",
+  "데이터 기반 Skill Gap 분석 및 학습경로 설계 역량",
+  "15년 이상 축적된 HR 컨설팅 전문 경력",
+];
 
-// Tab 1 — 본부 소개
-function IntroTab() {
-  const coreValues = [
-    { icon: Award, title: '전문성', desc: '15년 이상 공공기관 HR 컨설팅 경험과 검증된 방법론' },
-    { icon: Target, title: '신뢰성', desc: '500건 이상 프로젝트를 통해 쌓아온 고객과의 신뢰' },
-    { icon: Lightbulb, title: '혁신성', desc: 'AI·디지털 전환 시대에 앞선 컨설팅 솔루션 제공' },
-  ];
-
-  const focusAreas = [
-    {
-      icon: Users,
-      color: 'bg-primary/10 text-primary',
-      title: 'HRM 컨설팅',
-      desc: '직무분석·직무급 전환·성과관리 등 직무 중심 인사혁신',
-    },
-    {
-      icon: Building2,
-      color: 'bg-green/10 text-green',
-      title: 'HRD 컨설팅',
-      desc: '역량모델링·Skill Gap 분석·학습경험 설계 등 인재개발',
-    },
-    {
-      icon: BrainCircuit,
-      color: 'bg-navy/10 text-navy',
-      title: 'AX 컨설팅',
-      desc: 'AI 진단·전략수립·Skill 구축 등 AI Transformation',
-    },
-    {
-      icon: Cpu,
-      color: 'bg-primary-bg-alt text-primary-dark',
-      title: '공공기관 혁신',
-      desc: '경영평가 대응·조직설계·정원산정 등 공공기관 특화 솔루션',
-    },
-  ];
-
-  return (
-    <div className="space-y-16">
-      {/* Mission & Vision */}
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-        <div className="bg-navy text-white rounded-2xl p-8">
-          <p className="text-xs font-semibold text-primary-light uppercase tracking-widest mb-3">Mission</p>
-          <p className="text-lg font-semibold leading-relaxed">
-            직무 중심의 인사혁신과 역량 기반의 인재개발을 통해 조직과 구성원의 지속가능한 성장을 실현합니다
-          </p>
-        </div>
-        <div className="bg-primary text-white rounded-2xl p-8">
-          <p className="text-xs font-semibold text-white/70 uppercase tracking-widest mb-3">Vision</p>
-          <p className="text-2xl font-bold leading-snug">
-            대한민국 No.1<br />직업능력 컨설팅 전문기관
-          </p>
-        </div>
-      </div>
-
-      {/* Core Values */}
-      <div>
-        <h3 className="text-xl font-bold text-text mb-6">핵심 가치</h3>
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-          {coreValues.map(({ icon: Icon, title, desc }) => (
-            <div key={title} className="bg-white border border-border rounded-xl p-6 hover:shadow-md transition-shadow">
-              <div className="w-10 h-10 rounded-xl bg-primary/10 flex items-center justify-center mb-4">
-                <Icon className="w-5 h-5 text-primary" />
-              </div>
-              <h4 className="font-bold text-text mb-2">{title}</h4>
-              <p className="text-sm text-text-muted leading-relaxed">{desc}</p>
-            </div>
-          ))}
-        </div>
-      </div>
-
-      {/* Focus Areas */}
-      <div>
-        <h3 className="text-xl font-bold text-text mb-6">주요 서비스 영역</h3>
-        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-          {focusAreas.map(({ icon: Icon, color, title, desc }) => (
-            <div key={title} className="flex items-start gap-4 bg-surface rounded-xl p-5">
-              <div className={`w-10 h-10 rounded-xl flex items-center justify-center flex-shrink-0 ${color}`}>
-                <Icon className="w-5 h-5" />
-              </div>
-              <div>
-                <h4 className="font-bold text-text mb-1">{title}</h4>
-                <p className="text-sm text-text-muted leading-relaxed">{desc}</p>
-              </div>
-            </div>
-          ))}
-        </div>
-      </div>
-    </div>
-  );
-}
-
-// Tab 2 — 시앤피컨설팅
-function CompanyTab() {
-  return (
-    <div className="space-y-12">
-      {/* Overview */}
-      <div className="max-w-2xl">
-        <h3 className="text-xl font-bold text-text mb-4">회사 개요</h3>
-        <p className="text-text-muted leading-relaxed">
-          시앤피컨설팅(Competency &amp; Performance Consulting)은 2010년 설립된 HR 전문 컨설팅 기업입니다.
-          공공기관과 민간기업의 인적자원관리(HRM), 인적자원개발(HRD), AI Transformation(AX) 분야에서
-          검증된 방법론과 풍부한 경험을 바탕으로 고객의 성장을 지원합니다.
-        </p>
-      </div>
-
-      {/* Organization Chart */}
-      <div>
-        <h3 className="text-xl font-bold text-text mb-6">조직 구성</h3>
-        <div className="flex flex-col items-center">
-          {/* Group */}
-          <div className="bg-navy text-white px-8 py-3 rounded-xl font-bold text-base shadow">
-            시앤피컨설팅 그룹
-          </div>
-          {/* Line */}
-          <div className="w-px h-8 bg-border" />
-          {/* Connector bar */}
-          <div className="w-full max-w-2xl h-px bg-border" />
-          {/* Divisions */}
-          <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 mt-0 w-full max-w-2xl">
-            {DIVISIONS.map((div) => (
-              <div
-                key={div}
-                className={`border rounded-lg px-3 py-2.5 text-center text-xs font-semibold transition-colors ${
-                  div === '직업능력컨설팅본부'
-                    ? 'bg-primary text-white border-primary'
-                    : 'bg-white border-border text-text-muted hover:border-primary hover:text-primary'
-                }`}
-              >
-                {div}
-              </div>
-            ))}
-          </div>
-        </div>
-      </div>
-
-      {/* CEO Greeting placeholder */}
-      <div className="bg-surface-warm rounded-2xl p-8 border-l-4 border-primary">
-        <p className="text-xs font-semibold text-primary uppercase tracking-widest mb-3">CEO 인사말</p>
-        <p className="text-text-muted leading-relaxed italic">
-          "직업능력컨설팅본부는 대한민국 공공기관과 기업의 인적자원관리·개발 혁신을 이끌어가고 있습니다.
-          앞으로도 고객의 성장 파트너로서 최고의 전문성과 신뢰를 바탕으로 함께하겠습니다."
-        </p>
-        <p className="mt-4 text-sm font-semibold text-text">— {COMPANY.ceo}, 대표이사</p>
-      </div>
-    </div>
-  );
-}
-
-// Tab 3 — 연혁
-function HistoryTab() {
-  return (
-    <div className="relative">
-      {/* Vertical line */}
-      <div className="absolute left-16 top-0 bottom-0 w-px bg-border hidden sm:block" />
-
-      <div className="space-y-10">
-        {TIMELINE.map(({ year, events }) => (
-          <div key={year} className="flex flex-col sm:flex-row gap-4 sm:gap-8">
-            {/* Year */}
-            <div className="sm:w-32 flex-shrink-0">
-              <span className="text-xl font-bold text-primary">{year}</span>
-            </div>
-            {/* Events */}
-            <div className="flex-1 bg-white border border-border rounded-xl p-5 hover:shadow-sm transition-shadow">
-              <ul className="space-y-2">
-                {events.map((event, i) => (
-                  <li key={i} className="flex items-start gap-2 text-sm text-text-muted">
-                    <span className="w-1.5 h-1.5 rounded-full bg-primary mt-1.5 flex-shrink-0" />
-                    {event}
-                  </li>
-                ))}
-              </ul>
-            </div>
-          </div>
-        ))}
-      </div>
-    </div>
-  );
-}
-
-// Tab 4 — 오시는 길
-function LocationTab() {
-  return (
-    <div className="space-y-8">
-      {/* Map placeholder */}
-      <div className="w-full h-64 md:h-80 bg-surface rounded-2xl border border-border flex items-center justify-center">
-        <div className="text-center text-text-muted">
-          <MapPin className="w-10 h-10 mx-auto mb-2 text-primary/40" />
-          <p className="text-sm font-medium">지도 준비중</p>
-        </div>
-      </div>
-
-      {/* Contact details */}
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-        {[
-          { icon: MapPin, label: '주소', value: COMPANY.address },
-          { icon: Phone, label: '전화', value: COMPANY.tel },
-          { icon: Mail, label: '이메일', value: COMPANY.email },
-          { icon: Clock, label: '운영시간', value: '평일 09:00 – 18:00 (주말·공휴일 휴무)' },
-        ].map(({ icon: Icon, label, value }) => (
-          <div key={label} className="flex items-start gap-4 bg-surface rounded-xl p-5">
-            <div className="w-9 h-9 rounded-lg bg-primary/10 flex items-center justify-center flex-shrink-0">
-              <Icon className="w-4 h-4 text-primary" />
-            </div>
-            <div>
-              <p className="text-xs text-text-muted mb-0.5">{label}</p>
-              <p className="text-sm font-medium text-text">{value}</p>
-            </div>
-          </div>
-        ))}
-      </div>
-    </div>
-  );
-}
+const cardVariant = {
+  hidden: { opacity: 0, y: 28 },
+  show: {
+    opacity: 1,
+    y: 0,
+    transition: { duration: 0.55, ease: [0.22, 1, 0.36, 1] as [number, number, number, number] },
+  },
+};
 
 export default function AboutPage() {
-  const [activeTab, setActiveTab] = useState<TabKey>('intro');
-
   return (
     <main>
       {/* Hero */}
-      <section className="bg-gradient-to-br from-navy via-navy to-navy/90 text-white py-20 md:py-28">
-        <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
-          <nav className="flex items-center gap-2 text-sm text-white/50 mb-8">
-            <Link href="/" className="hover:text-white transition-colors">홈</Link>
-            <span>/</span>
-            <span className="text-white/80">본부 소개</span>
-          </nav>
-          <h1 className="text-3xl md:text-4xl lg:text-5xl font-bold mb-4">본부 소개</h1>
-          <p className="text-lg md:text-xl text-primary-light font-medium">
-            직업능력컨설팅본부를 소개합니다
-          </p>
+      <section className="relative bg-gradient-to-br from-[#0F1729] to-[#1A3A5C] text-white py-24 lg:py-36 overflow-hidden">
+        <div className="absolute inset-0 pointer-events-none select-none" aria-hidden>
+          <div className="absolute -top-32 -right-32 w-[480px] h-[480px] rounded-full border border-white/5" />
+          <div className="absolute -top-16 -right-16 w-[320px] h-[320px] rounded-full border border-white/5" />
+          <svg className="absolute inset-0 w-full h-full opacity-[0.04]" xmlns="http://www.w3.org/2000/svg">
+            <defs>
+              <pattern id="about-dots" x="0" y="0" width="32" height="32" patternUnits="userSpaceOnUse">
+                <circle cx="2" cy="2" r="1.5" fill="white" />
+              </pattern>
+            </defs>
+            <rect width="100%" height="100%" fill="url(#about-dots)" />
+          </svg>
+          <div
+            className="absolute bottom-0 left-0 w-[600px] h-[2px] opacity-10 origin-bottom-left rotate-[-20deg]"
+            style={{ background: 'linear-gradient(90deg, transparent, white)' }}
+          />
+        </div>
+
+        <div className="relative max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+          <motion.nav
+            initial={{ opacity: 0, y: -8 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.4, ease: 'easeOut' }}
+            className="flex items-center gap-1.5 text-xs text-white/40 mb-10"
+            aria-label="breadcrumb"
+          >
+            <Link href="/" className="inline-flex items-center gap-1 hover:text-white/80 transition-colors">
+              <span>홈</span>
+            </Link>
+            <span className="text-white/25">&gt;</span>
+            <span className="text-white/80">본부소개</span>
+          </motion.nav>
+
+          <motion.div
+            initial={{ opacity: 0, y: 28 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6, ease: 'easeOut', delay: 0.05 }}
+          >
+            <div className="w-10 h-1 rounded-full bg-primary mb-6" />
+            <h1 className="text-4xl md:text-5xl lg:text-6xl font-light tracking-tight text-white mb-4">
+              직업능력컨설팅본부
+            </h1>
+            <p className="text-lg text-white/60 max-w-2xl mb-8">
+              {COMPANY.slogan}
+            </p>
+            <p className="text-base text-white/45 max-w-2xl leading-relaxed">
+              시앤피컨설팅 직업능력컨설팅본부는 직무분석·역량모델링·NCS·Skill 기반 인재개발·AI Transformation까지,
+              공공기관과 민간기업의 HR 혁신을 이론과 현장 실무로 설계하는 전문 컨설팅 조직입니다.
+            </p>
+          </motion.div>
         </div>
       </section>
 
-      {/* Tab Navigation */}
-      <div className="bg-white border-b border-border sticky top-0 z-20">
+      {/* Stats Strip */}
+      <section className="py-10 bg-white border-b border-border">
         <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
-          <nav className="flex overflow-x-auto">
-            {TABS.map((tab) => (
-              <button
-                key={tab.key}
-                onClick={() => setActiveTab(tab.key)}
-                className={`px-5 py-4 text-sm font-semibold whitespace-nowrap border-b-2 transition-colors duration-150 cursor-pointer ${
-                  activeTab === tab.key
-                    ? 'border-primary text-primary'
-                    : 'border-transparent text-text-muted hover:text-text hover:border-border'
-                }`}
-              >
-                {tab.label}
-              </button>
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-8">
+            {HOME_STATS.map((stat) => (
+              <div key={stat.label} className="text-center">
+                <p className="text-3xl font-bold text-navy font-[Inter]">
+                  {stat.value}<span className="text-primary text-xl">{stat.suffix}</span>
+                </p>
+                <p className="text-sm text-text-muted mt-1">{stat.label}</p>
+              </div>
             ))}
-          </nav>
+          </div>
         </div>
-      </div>
+      </section>
 
-      {/* Tab Content */}
-      <section className="py-14">
+      {/* Why Us — Strengths */}
+      <section className="py-20 bg-surface">
         <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
-          {activeTab === 'intro' && <IntroTab />}
-          {activeTab === 'company' && <CompanyTab />}
-          {activeTab === 'history' && <HistoryTab />}
-          {activeTab === 'location' && <LocationTab />}
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.5 }}
+            className="mb-12"
+          >
+            <p className="label-caps text-primary mb-3">왜 시앤피컨설팅인가</p>
+            <h2 className="text-3xl md:text-4xl font-light tracking-tight text-text">
+              차별화된 전문성
+            </h2>
+          </motion.div>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            {STRENGTHS.map((item, i) => (
+              <motion.div
+                key={i}
+                initial={{ opacity: 0, x: -16 }}
+                whileInView={{ opacity: 1, x: 0 }}
+                viewport={{ once: true }}
+                transition={{ duration: 0.4, delay: i * 0.06 }}
+                className="flex items-start gap-3 bg-white rounded-xl p-5 border border-border"
+              >
+                <CheckCircle className="w-5 h-5 text-teal mt-0.5 shrink-0" />
+                <p className="text-sm text-text leading-relaxed">{item}</p>
+              </motion.div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* Service Areas */}
+      <section className="py-20 bg-white">
+        <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.5 }}
+            className="mb-14"
+          >
+            <p className="label-caps text-primary mb-3">핵심 서비스</p>
+            <h2 className="text-3xl md:text-4xl font-light tracking-tight text-text">
+              전문 서비스 영역
+            </h2>
+          </motion.div>
+
+          <motion.div
+            initial="hidden"
+            whileInView="show"
+            viewport={{ once: true, amount: 0.1 }}
+            transition={{ staggerChildren: 0.12 }}
+            className="grid grid-cols-1 md:grid-cols-3 gap-6"
+          >
+            {SERVICES.map((svc) => (
+              <motion.div
+                key={svc.area}
+                variants={cardVariant}
+                className="group relative bg-white border border-border border-l-4 rounded-xl overflow-hidden hover:shadow-lg hover:-translate-y-1 transition-all duration-300"
+                style={{ borderLeftColor: svc.color }}
+              >
+                <div className="p-6 flex flex-col h-full">
+                  <div className="flex items-center gap-3 mb-4">
+                    <div
+                      className="w-11 h-11 rounded-xl flex items-center justify-center"
+                      style={{ background: svc.bgLight, color: svc.color }}
+                    >
+                      {svc.icon}
+                    </div>
+                    <div>
+                      <span
+                        className="text-xs font-bold px-2.5 py-1 rounded-full text-white"
+                        style={{ background: svc.color }}
+                      >
+                        {svc.area}
+                      </span>
+                    </div>
+                  </div>
+
+                  <h3 className="text-lg font-semibold text-navy mb-1">{svc.title}</h3>
+                  <p className="text-xs text-text-light mb-3">{svc.subtitle}</p>
+                  <p className="text-sm text-text-muted leading-relaxed mb-5">{svc.description}</p>
+
+                  <ul className="space-y-2 mb-6 flex-1">
+                    {svc.highlights.map((h) => (
+                      <li key={h} className="flex items-start gap-2 text-sm text-text">
+                        <span
+                          className="mt-1.5 w-1.5 h-1.5 rounded-full shrink-0"
+                          style={{ background: svc.color }}
+                        />
+                        {h}
+                      </li>
+                    ))}
+                  </ul>
+
+                  <Link
+                    href={svc.href}
+                    className="text-sm font-semibold inline-flex items-center gap-1 group/link transition-colors duration-200"
+                    style={{ color: svc.color }}
+                  >
+                    자세히 보기
+                    <span className="transition-transform duration-200 group-hover/link:translate-x-1">→</span>
+                  </Link>
+                </div>
+              </motion.div>
+            ))}
+          </motion.div>
+        </div>
+      </section>
+
+      {/* CTA */}
+      <section className="py-20 bg-navy">
+        <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+          <h2 className="text-2xl md:text-3xl font-light tracking-tight text-white mb-4">
+            함께 일하고 싶으시다면
+          </h2>
+          <p className="text-white/50 mb-8 max-w-md mx-auto">
+            직업능력컨설팅본부의 전문 컨설턴트가 최적의 솔루션을 제안합니다.
+          </p>
+          <Link
+            href="/contact"
+            className="inline-flex items-center gap-2 bg-primary text-white px-8 py-3.5 rounded-md font-semibold text-sm hover:bg-primary-light transition-colors duration-200"
+          >
+            상담 신청하기
+            <ArrowRight className="w-4 h-4" />
+          </Link>
         </div>
       </section>
     </main>

@@ -1,156 +1,59 @@
-import type { Metadata } from "next";
-import { BrainCircuit, TrendingUp, Database } from "lucide-react";
-import { HRD_SERVICE, HRD_TRENDS } from "@/lib/constants";
-import ServiceHero from "@/components/services/ServiceHero";
-import SolutionCard from "@/components/services/SolutionCard";
-import ProcessTimeline from "@/components/services/ProcessTimeline";
-import ServiceStats from "@/components/services/ServiceStats";
-import ServiceCTA from "@/components/services/ServiceCTA";
+import type { Metadata } from 'next';
+import { HRD_SERVICE, HRD_PAIN_POINTS, PORTFOLIO_PROJECTS } from '@/lib/constants';
+import ServiceHero from '@/components/services/ServiceHero';
+import SolutionCard from '@/components/services/SolutionCard';
+import ProcessTimeline from '@/components/services/ProcessTimeline';
+import ServiceStats from '@/components/services/ServiceStats';
+import ServiceCTA from '@/components/services/ServiceCTA';
+import { getIcon } from '@/lib/icons';
 
 export const metadata: Metadata = {
-  title: "HRD 컨설팅 — Skill 기반 인재개발",
+  title: 'HRD 컨설팅 — 체계적 인재개발',
+  description:
+    'DACUM·CBC 기반 직무분석, NCS 교육체계 수립, 역량모델링(BEI), Skill Gap 분석, 학습경로 설계. 이론과 현장 실무를 겸비한 인재개발 전문기관.',
 };
 
-const TREND_ICONS = [BrainCircuit, TrendingUp, Database];
+const relatedProjects = PORTFOLIO_PROJECTS.filter((p) => p.category === 'HRD').slice(0, 3);
 
-export default function HrdPage() {
+export default function HRDPage() {
   return (
     <main>
       {/* Hero */}
-      <ServiceHero service={HRD_SERVICE} tag="HRD" team="HR솔루션팀" />
+      <ServiceHero
+        tag={HRD_SERVICE.tag}
+        tagColor="teal"
+        title={HRD_SERVICE.title}
+        subtitle={HRD_SERVICE.subtitle}
+        description={HRD_SERVICE.description}
+      />
 
-      {/* Paradigm Shift */}
-      <section className="py-20 bg-white">
-        <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="text-center mb-12">
-            <span className="inline-block px-3 py-1 bg-green/10 text-green text-sm font-medium rounded-full mb-4">
-              패러다임 전환
-            </span>
-            <h2 className="text-3xl md:text-4xl font-bold text-navy">
-              역량(Competency)에서 스킬(Skill)로
-            </h2>
-            <p className="mt-4 text-text-muted max-w-2xl mx-auto">
-              AI 시대의 인재개발은 추상적 역량 개념을 넘어, 측정 가능한 스킬 단위로 진화하고 있습니다.
-            </p>
-          </div>
-
-          <div className="grid md:grid-cols-2 gap-6 max-w-4xl mx-auto">
-            {/* Before */}
-            <div className="relative rounded-2xl border-2 border-border bg-surface p-8">
-              <div className="absolute -top-3 left-6">
-                <span className="bg-text-muted text-white text-xs font-bold px-3 py-1 rounded-full">
-                  BEFORE
-                </span>
-              </div>
-              <h3 className="text-xl font-bold text-text-muted mb-6 mt-2">역량 중심</h3>
-              <ul className="space-y-3">
-                {[
-                  "광범위하고 추상적인 역량 정의",
-                  "평가자 주관에 의존하는 측정",
-                  "직급·직군 단위 일괄 교육",
-                  "교육 효과 측정의 어려움",
-                  "변화 속도 대응 한계",
-                ].map((item) => (
-                  <li key={item} className="flex items-start gap-3 text-text-muted">
-                    <span className="mt-1.5 w-1.5 h-1.5 rounded-full bg-text-muted shrink-0" />
-                    <span className="text-sm">{item}</span>
-                  </li>
-                ))}
-              </ul>
-            </div>
-
-            {/* After */}
-            <div className="relative rounded-2xl border-2 border-green bg-green/5 p-8 shadow-lg">
-              <div className="absolute -top-3 left-6">
-                <span className="bg-green text-white text-xs font-bold px-3 py-1 rounded-full">
-                  AFTER
-                </span>
-              </div>
-              <h3 className="text-xl font-bold text-green mb-6 mt-2">스킬 중심</h3>
-              <ul className="space-y-3">
-                {[
-                  "구체적이고 측정 가능한 스킬 단위",
-                  "객관적 데이터 기반 진단",
-                  "개인별 맞춤형 학습 경로",
-                  "Skill Gap 기반 교육 효과 추적",
-                  "AI 시대 변화에 민첩한 대응",
-                ].map((item) => (
-                  <li key={item} className="flex items-start gap-3 text-navy">
-                    <svg className="mt-0.5 w-4 h-4 text-green shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.5}>
-                      <path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" />
-                    </svg>
-                    <span className="text-sm font-medium">{item}</span>
-                  </li>
-                ))}
-              </ul>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* Solutions */}
+      {/* Pain Points */}
       <section className="py-20 bg-surface">
         <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-12">
-            <span className="inline-block px-3 py-1 bg-green/10 text-green text-sm font-medium rounded-full mb-4">
-              서비스
-            </span>
-            <h2 className="text-3xl md:text-4xl font-bold text-navy">
-              시앤피컨설팅의 HRD 솔루션
+            <p className="label-caps text-text-muted mb-3">공통 과제</p>
+            <h2 className="text-3xl lg:text-4xl font-light tracking-tight text-navy">
+              이런 고민이 있으신가요?
             </h2>
-          </div>
-          <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-6">
-            {HRD_SERVICE.items.map((item) => (
-              <SolutionCard
-                key={item.title}
-                item={item}
-                color="green"
-              />
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* Process */}
-      <section className="py-20 bg-white">
-        <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="text-center mb-12">
-            <span className="inline-block px-3 py-1 bg-green/10 text-green text-sm font-medium rounded-full mb-4">
-              프로세스
-            </span>
-            <h2 className="text-3xl md:text-4xl font-bold text-navy">컨설팅 진행 과정</h2>
-          </div>
-          <ProcessTimeline steps={HRD_SERVICE.process} color="green" />
-        </div>
-      </section>
-
-      {/* HRD Trends */}
-      <section className="py-20 bg-surface-warm">
-        <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="text-center mb-12">
-            <span className="inline-block px-3 py-1 bg-green/10 text-green text-sm font-medium rounded-full mb-4">
-              트렌드
-            </span>
-            <h2 className="text-3xl md:text-4xl font-bold text-navy">2025 HRD 트렌드</h2>
-            <p className="mt-4 text-text-muted max-w-2xl mx-auto">
-              빠르게 변화하는 인재개발 환경에서 시앤피컨설팅이 앞서 나갑니다.
+            <p className="mt-3 text-text-muted max-w-xl mx-auto">
+              많은 기관이 직면한 인재개발의 공통 과제입니다
             </p>
           </div>
-          <div className="grid md:grid-cols-3 gap-6">
-            {HRD_TRENDS.map((trend, idx) => {
-              const Icon = TREND_ICONS[idx];
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+            {HRD_PAIN_POINTS.map((point) => {
+              const IconComponent = getIcon(point.icon);
               return (
                 <div
-                  key={trend.title}
-                  className="bg-surface rounded-2xl p-8 flex flex-col items-start gap-4 border border-border hover:border-green hover:shadow-md transition-all"
+                  key={point.title}
+                  className="bg-white rounded-xl p-8 border border-border"
                 >
-                  <div className="w-12 h-12 rounded-xl bg-green/10 flex items-center justify-center">
-                    <Icon className="w-6 h-6 text-green" />
+                  <div className="w-12 h-12 bg-amber-50 rounded-lg flex items-center justify-center mb-5">
+                    {IconComponent && (
+                      <IconComponent className="w-6 h-6 text-amber-600" />
+                    )}
                   </div>
-                  <div>
-                    <h3 className="text-lg font-bold text-navy mb-2">{trend.title}</h3>
-                    <p className="text-text-muted text-sm leading-relaxed">{trend.description}</p>
-                  </div>
+                  <h3 className="font-semibold text-navy mb-2">{point.title}</h3>
+                  <p className="text-text-muted text-sm leading-relaxed">{point.description}</p>
                 </div>
               );
             })}
@@ -158,11 +61,109 @@ export default function HrdPage() {
         </div>
       </section>
 
+      {/* NCS 전문성 */}
+      <section className="py-12 bg-white border-y border-border">
+        <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="flex flex-col md:flex-row items-center gap-8 justify-center">
+            <div className="text-center md:text-left">
+              <p className="text-xs uppercase tracking-widest text-teal font-semibold mb-2">NCS 전문기관</p>
+              <h3 className="text-2xl font-light text-navy mb-2">
+                국가직무능력표준(NCS) <span className="font-semibold">개발·개선·활용</span> 전 과정
+              </h3>
+              <p className="text-text-muted text-sm max-w-lg">
+                한국산업인력공단과 4년 연속 협력하며 NCS 개발, SQF 설계, 과정평가형 자격, 기업활용 컨설팅 등 NCS 생태계 전반을 아우릅니다.
+              </p>
+            </div>
+            <div className="flex gap-3 flex-wrap justify-center">
+              {['NCS 개발·개선', 'SQF 설계', '과정평가형 자격', 'NCS 기업활용'].map((tag) => (
+                <span key={tag} className="text-sm px-4 py-2 rounded-full bg-teal/10 text-teal border border-teal/20 font-medium">
+                  {tag}
+                </span>
+              ))}
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Solutions */}
+      <section className="py-20 bg-white">
+        <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="text-center mb-12">
+            <p className="label-caps text-text-muted mb-3">솔루션</p>
+            <h2 className="text-3xl lg:text-4xl font-light tracking-tight text-navy">
+              시앤피컨설팅의 HRD 솔루션
+            </h2>
+          </div>
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+            {HRD_SERVICE.items.map((item) => (
+              <SolutionCard
+                key={item.title}
+                icon={item.icon}
+                title={item.title}
+                description={item.description}
+                methodology={item.methodology}
+                deliverables={item.deliverables}
+                color="teal"
+              />
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* Process */}
+      <section className="py-20 bg-surface">
+        <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="text-center mb-12">
+            <p className="label-caps text-text-muted mb-3">프로세스</p>
+            <h2 className="text-3xl lg:text-4xl font-light tracking-tight text-navy">
+              컨설팅 진행 과정
+            </h2>
+            <p className="mt-3 text-text-muted">역량 기반 인재개발의 4단계 체계적 접근</p>
+          </div>
+          <ProcessTimeline steps={HRD_SERVICE.process} />
+        </div>
+      </section>
+
       {/* Stats */}
-      <ServiceStats stats={HRD_SERVICE.stats} color="green" />
+      <ServiceStats stats={HRD_SERVICE.stats} color="teal" />
+
+      {/* Related Projects */}
+      {relatedProjects.length > 0 && (
+        <section className="py-20 bg-white">
+          <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div className="text-center mb-12">
+              <p className="label-caps text-text-muted mb-3">사업실적</p>
+              <h2 className="text-3xl lg:text-4xl font-light tracking-tight text-navy">
+                HRD 주요 수행 실적
+              </h2>
+            </div>
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+              {relatedProjects.map((project) => (
+                <div
+                  key={project.id}
+                  className="bg-surface rounded-xl p-6 border border-border"
+                >
+                  <p className="label-caps text-text-light mb-3">{project.period}</p>
+                  <h3 className="font-semibold text-navy mb-1">{project.name}</h3>
+                  <p className="text-text-muted text-sm">{project.client}</p>
+                  {project.overview && (
+                    <p className="mt-3 text-text-muted text-sm leading-relaxed border-t border-border pt-3">
+                      {project.overview}
+                    </p>
+                  )}
+                </div>
+              ))}
+            </div>
+          </div>
+        </section>
+      )}
 
       {/* CTA */}
-      <ServiceCTA text="HRD 솔루션 문의" href="/contact" color="green" />
+      <ServiceCTA
+        text={HRD_SERVICE.cta.text}
+        href={HRD_SERVICE.cta.href}
+        color="teal"
+      />
     </main>
   );
 }

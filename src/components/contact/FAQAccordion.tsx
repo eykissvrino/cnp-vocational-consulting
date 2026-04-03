@@ -38,7 +38,7 @@ export default function FAQAccordion() {
                 isOpen ? 'max-h-96' : 'max-h-0'
               }`}
             >
-              <div className="px-5 pb-5 pt-1 bg-primary-bg border-t border-border">
+              <div className="px-5 pb-5 pt-3 bg-primary-bg border-t border-border">
                 <p className="text-sm text-text-muted leading-relaxed">
                   A. {item.answer}
                 </p>
