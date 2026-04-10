@@ -19,6 +19,10 @@ import {
   Database,
   Factory,
   RefreshCw,
+  Layers,
+  Landmark,
+  SearchCheck,
+  Award,
 } from 'lucide-react';
 import type { LucideProps } from 'lucide-react';
 import type { ComponentType } from 'react';
@@ -46,6 +50,10 @@ export const ICON_MAP: Record<string, IconComponent> = {
   Database,
   Factory,
   RefreshCw,
+  Layers,
+  Landmark,
+  SearchCheck,
+  Award,
 };
 
 export function getIcon(name: string): IconComponent | null {

@@ -137,9 +137,9 @@ export default function HeroSection() {
             variants={item}
             className="text-white/60 text-lg leading-relaxed mb-10 max-w-xl"
           >
-            공공·민간 HRM · HRD · AX 컨설팅 전문기관
+            기업별 맞춤형 HR 전문 본부입니다
             <br />
-            15년 이상의 실적이 증명합니다
+            HRM · 공공기관 HR · HRD · AX 컨설팅
           </motion.p>
 
           {/* CTAs */}

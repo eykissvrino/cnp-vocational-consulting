@@ -10,7 +10,7 @@ import { getIcon } from '@/lib/icons';
 export const metadata: Metadata = {
   title: 'HRD 컨설팅 — 체계적 인재개발',
   description:
-    'DACUM·CBC 기반 직무분석, NCS 교육체계 수립, 역량모델링(BEI), Skill Gap 분석, 학습경로 설계. 이론과 현장 실무를 겸비한 인재개발 전문기관.',
+    'DACUM·CBC·NCS 기반 직무분석, 역량모델링, Skill 기반 체계적 HRD 컨설팅. 기업 맞춤형 교육체계 수립부터 교육과정 개발, 성과관리까지.',
 };
 
 const relatedProjects = PORTFOLIO_PROJECTS.filter((p) => p.category === 'HRD').slice(0, 3);
@@ -94,7 +94,7 @@ export default function HRDPage() {
               시앤피컨설팅의 HRD 솔루션
             </h2>
           </div>
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
             {HRD_SERVICE.items.map((item) => (
               <SolutionCard
                 key={item.title}

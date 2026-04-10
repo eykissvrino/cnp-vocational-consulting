@@ -2,7 +2,7 @@
 
 import Link from 'next/link';
 import { motion } from 'framer-motion';
-import { ArrowRight, Users, BookOpen, BrainCircuit, CheckCircle } from 'lucide-react';
+import { ArrowRight, Users, Landmark, BookOpen, BrainCircuit, CheckCircle } from 'lucide-react';
 import { COMPANY, HOME_STATS } from '@/lib/constants';
 
 const SERVICES = [
@@ -10,33 +10,44 @@ const SERVICES = [
     area: "HRM",
     title: "HRM 컨설팅",
     subtitle: "직무중심 인적자원관리",
-    description: "직무분석(DACUM·과업목록법), 직무평가, 보수체계(직무급) 설계, 성과관리체계 구축, 적정인력 산정까지. 공공기관과 민간기업의 직무 중심 인사혁신 전 과정을 수행합니다.",
-    highlights: ["직무분석 및 직무분류체계", "직무평가 및 직급체계 설계", "보수체계(직무급) 전환", "성과관리·조직설계"],
+    description: "직무분석 및 분류체계 수립, 직무체계 설계, 직무평가 기반 직무등급 설계, 직무중심 보수체계 전환, 성과관리체계 및 조직설계까지. 직무 중심 인사혁신의 전 과정을 설계합니다.",
+    highlights: ["직무분석 및 분류체계 수립", "직무체계 설계", "직무평가 기반 직무등급 설계", "직무중심 보수체계 전환", "성과관리체계 및 조직설계"],
     icon: <Users className="w-6 h-6" />,
-    color: "var(--color-navy)",
-    bgLight: "rgba(15,23,41,0.06)",
+    color: "var(--color-teal)",
+    bgLight: "rgba(26,107,114,0.06)",
     href: "/services/hrm",
+  },
+  {
+    area: "공공HR",
+    title: "공공기관 HR 컨설팅",
+    subtitle: "공공부문 인사혁신 전문",
+    description: "공공기관 직무중심 인사제도 개편, 조직·인력 운영진단, 중장기 경영전략 수립, 경영평가 대응까지. 공공부문 HR 혁신을 체계적으로 지원합니다.",
+    highlights: ["직무중심 인사제도 개편(채용·평가·직무급 등)", "조직·인력 운영진단", "중장기 경영전략 수립", "경영평가 대응 지원"],
+    icon: <Landmark className="w-6 h-6" />,
+    color: "#334155",
+    bgLight: "rgba(51,65,85,0.06)",
+    href: "/services/public-hr",
   },
   {
     area: "HRD",
     title: "HRD 컨설팅",
     subtitle: "체계적 인재개발 솔루션",
-    description: "DACUM·CBC 기반 직무분석에서 출발, NCS 교육체계 수립, 역량모델링(BEI), Skill Gap 분석, 경력개발경로(CDP) 설계까지. 이론과 현장을 겸비한 인재개발 전 영역을 설계합니다.",
-    highlights: ["교육체계 수립·교육과정 개발", "역량모델링 및 역량평가", "Skill Gap 분석·러닝패스 설계", "NCS·SQF 개발 전문"],
+    description: "직무분석·역량모델링·Skill 기반 교육체계 수립, 교육로드맵 및 교육과정 개발, 교육운영 및 성과관리 체계 구축까지. 인재개발 전 영역을 설계합니다.",
+    highlights: ["기업 맞춤형 교육체계 수립(직무분석·역량모델링·Skill 기반)", "교육로드맵 및 교육과정 개발", "교육운영 및 성과관리 체계 구축", "직무·경력·조직 개발 컨설팅"],
     icon: <BookOpen className="w-6 h-6" />,
-    color: "var(--color-teal)",
-    bgLight: "rgba(26,107,114,0.06)",
+    color: "var(--color-primary)",
+    bgLight: "rgba(224,123,57,0.06)",
     href: "/services/hrd",
   },
   {
     area: "AX",
     title: "AX 컨설팅",
     subtitle: "AI Transformation",
-    description: "AI 성숙도 진단(6차원 프레임워크)부터 전략 수립, AX Skill Set 구축, 워크플로우 재설계, AI 교육훈련까지. HRM·HRD 전문성을 기반으로 사람 중심의 AI 전환을 설계합니다.",
-    highlights: ["AX 진단 및 전략수립", "AX Skill Set 구축", "AI 워크플로우 재설계", "AX 교육훈련"],
+    description: "AX(AI 전환) 수준 진단부터 전략 수립, AI 역량 및 Skill Set 구축, 워크플로우 재설계, PBL 기반 교육훈련까지. 사람 중심의 AI 전환을 설계합니다.",
+    highlights: ["AX(AI 전환) 수준 진단", "AX 전략 및 실행 로드맵 수립", "AI 역량 및 Skill Set 구축", "AI 활용 워크플로우 재설계", "AX 실행역량 강화 교육훈련(PBL)"],
     icon: <BrainCircuit className="w-6 h-6" />,
-    color: "var(--color-primary)",
-    bgLight: "rgba(224,123,57,0.06)",
+    color: "var(--color-navy)",
+    bgLight: "rgba(15,23,41,0.04)",
     href: "/services/ax",
   },
 ];
@@ -109,8 +120,8 @@ export default function AboutPage() {
               {COMPANY.slogan}
             </p>
             <p className="text-base text-white/45 max-w-2xl leading-relaxed">
-              시앤피컨설팅 직업능력컨설팅본부는 직무분석·역량모델링·NCS·Skill 기반 인재개발·AI Transformation까지,
-              공공기관과 민간기업의 HR 혁신을 이론과 현장 실무로 설계하는 전문 컨설팅 조직입니다.
+              기업별 맞춤형 HR 전문 본부입니다. 직무분석·역량모델링·NCS·Skill 기반 인재개발·AI Transformation까지,
+              공공기관과 민간기업의 HR 혁신을 이론과 현장 실무로 설계합니다.
             </p>
           </motion.div>
         </div>
@@ -186,7 +197,7 @@ export default function AboutPage() {
             whileInView="show"
             viewport={{ once: true, amount: 0.1 }}
             transition={{ staggerChildren: 0.12 }}
-            className="grid grid-cols-1 md:grid-cols-3 gap-6"
+            className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6"
           >
             {SERVICES.map((svc) => (
               <motion.div

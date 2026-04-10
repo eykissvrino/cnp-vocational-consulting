@@ -5,8 +5,8 @@ import { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { SERVICES_OVERVIEW } from '@/lib/constants';
 
-const PANEL_BG = ['bg-navy', 'bg-teal', 'bg-slate'];
-const PANEL_BORDER = ['border-navy', 'border-teal', 'border-slate'];
+const PANEL_BG = ['bg-navy', 'bg-slate-700', 'bg-teal', 'bg-slate'];
+const PANEL_BORDER = ['border-navy', 'border-slate-700', 'border-teal', 'border-slate'];
 
 export default function ServicesPage() {
   const [hovered, setHovered] = useState<string | null>(null);
@@ -21,22 +21,22 @@ export default function ServicesPage() {
             전문 서비스
           </h1>
           <p className="mt-4 text-text-muted text-lg max-w-2xl">
-            HRM · HRD · AX — 세 개의 전문 서비스 영역으로 조직의 인사혁신을 종합 지원합니다.
+            HRM · 공공기관 HR · HRD · AX — 네 개의 전문 서비스 영역으로 조직의 인사혁신을 종합 지원합니다.
           </p>
         </div>
       </section>
 
       {/* 3 Vertical Panels */}
-      <section className="flex flex-col lg:flex-row">
+      <section className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4">
         {SERVICES_OVERVIEW.map((service, idx) => {
           const isHovered = hovered === service.id;
-          const bgClass = PANEL_BG[idx];
+          const bgClass = PANEL_BG[idx] ?? 'bg-navy';
 
           return (
             <Link
               key={service.id}
               href={service.href}
-              className={`relative flex-1 min-h-[60vh] flex flex-col justify-end overflow-hidden ${bgClass} group cursor-pointer`}
+              className={`relative min-h-[50vh] lg:min-h-[60vh] flex flex-col justify-end overflow-hidden ${bgClass} group cursor-pointer`}
               onMouseEnter={() => setHovered(service.id)}
               onMouseLeave={() => setHovered(null)}
             >

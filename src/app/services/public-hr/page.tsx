@@ -1,5 +1,5 @@
 import type { Metadata } from 'next';
-import { HRM_SERVICE, HRM_PAIN_POINTS, PORTFOLIO_PROJECTS } from '@/lib/constants';
+import { PUBLIC_HR_SERVICE, PUBLIC_HR_PAIN_POINTS, PORTFOLIO_PROJECTS } from '@/lib/constants';
 import ServiceHero from '@/components/services/ServiceHero';
 import SolutionCard from '@/components/services/SolutionCard';
 import ProcessTimeline from '@/components/services/ProcessTimeline';
@@ -8,24 +8,37 @@ import ServiceCTA from '@/components/services/ServiceCTA';
 import { getIcon } from '@/lib/icons';
 
 export const metadata: Metadata = {
-  title: 'HRM 컨설팅 — 직무중심 인사관리',
+  title: '공공기관 HR 컨설팅 — 직무급 전환·경영평가 대응',
   description:
-    '직무분석 및 분류체계 수립, 직무체계 설계, 직무평가 기반 직무등급 설계, 직무중심 보수체계 전환, 성과관리체계 및 조직설계.',
+    '공공기관 직무중심 인사제도 개편, 조직·인력 운영진단, 중장기 경영전략 수립, 경영평가 대응 지원. 공공부문 HR 혁신 전문.',
 };
 
 const relatedProjects = PORTFOLIO_PROJECTS.filter((p) => p.category === 'HRM').slice(0, 3);
 
-export default function HRMPage() {
+export default function PublicHRPage() {
   return (
     <main>
       {/* Hero */}
       <ServiceHero
-        tag={HRM_SERVICE.tag}
+        tag={PUBLIC_HR_SERVICE.tag}
         tagColor="navy"
-        title={HRM_SERVICE.title}
-        subtitle={HRM_SERVICE.subtitle}
-        description={HRM_SERVICE.description}
+        title={PUBLIC_HR_SERVICE.title}
+        subtitle={PUBLIC_HR_SERVICE.subtitle}
+        description={PUBLIC_HR_SERVICE.description}
       />
+
+      {/* 기재부 가이드라인 */}
+      <section className="py-6 bg-navy">
+        <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="flex items-center gap-4 justify-center text-center">
+            <div className="w-1 h-12 bg-primary rounded-full hidden sm:block" />
+            <div>
+              <p className="text-white/60 text-xs uppercase tracking-widest mb-1">기획재정부 가이드라인 기반</p>
+              <p className="text-white text-lg font-light">직무급 전환의 <span className="font-semibold text-primary-light">체계적 설계와 안착</span>을 지원합니다</p>
+            </div>
+          </div>
+        </div>
+      </section>
 
       {/* Pain Points */}
       <section className="py-20 bg-surface">
@@ -40,16 +53,16 @@ export default function HRMPage() {
             </p>
           </div>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-            {HRM_PAIN_POINTS.map((point) => {
+            {PUBLIC_HR_PAIN_POINTS.map((point) => {
               const IconComponent = getIcon(point.icon);
               return (
                 <div
                   key={point.title}
                   className="bg-white rounded-xl p-8 border border-border"
                 >
-                  <div className="w-12 h-12 bg-amber-50 rounded-lg flex items-center justify-center mb-5">
+                  <div className="w-12 h-12 bg-blue-50 rounded-lg flex items-center justify-center mb-5">
                     {IconComponent && (
-                      <IconComponent className="w-6 h-6 text-amber-600" />
+                      <IconComponent className="w-6 h-6 text-blue-600" />
                     )}
                   </div>
                   <h3 className="font-semibold text-navy mb-2">{point.title}</h3>
@@ -67,11 +80,11 @@ export default function HRMPage() {
           <div className="text-center mb-12">
             <p className="label-caps text-text-muted mb-3">솔루션</p>
             <h2 className="text-3xl lg:text-4xl font-light tracking-tight text-navy">
-              시앤피컨설팅의 HRM 솔루션
+              공공기관 HR 컨설팅 솔루션
             </h2>
           </div>
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-            {HRM_SERVICE.items.map((item) => (
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+            {PUBLIC_HR_SERVICE.items.map((item) => (
               <SolutionCard
                 key={item.title}
                 icon={item.icon}
@@ -96,12 +109,12 @@ export default function HRMPage() {
             </h2>
             <p className="mt-3 text-text-muted">검증된 4단계 방법론으로 성공적인 전환을 지원합니다</p>
           </div>
-          <ProcessTimeline steps={HRM_SERVICE.process} />
+          <ProcessTimeline steps={PUBLIC_HR_SERVICE.process} />
         </div>
       </section>
 
       {/* Stats */}
-      <ServiceStats stats={HRM_SERVICE.stats} color="navy" />
+      <ServiceStats stats={PUBLIC_HR_SERVICE.stats} color="navy" />
 
       {/* Related Projects */}
       {relatedProjects.length > 0 && (
@@ -110,7 +123,7 @@ export default function HRMPage() {
             <div className="text-center mb-12">
               <p className="label-caps text-text-muted mb-3">사업실적</p>
               <h2 className="text-3xl lg:text-4xl font-light tracking-tight text-navy">
-                HRM 주요 수행 실적
+                공공기관 HR 주요 수행 실적
               </h2>
             </div>
             <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
@@ -136,8 +149,8 @@ export default function HRMPage() {
 
       {/* CTA */}
       <ServiceCTA
-        text={HRM_SERVICE.cta.text}
-        href={HRM_SERVICE.cta.href}
+        text={PUBLIC_HR_SERVICE.cta.text}
+        href={PUBLIC_HR_SERVICE.cta.href}
         color="navy"
       />
     </main>

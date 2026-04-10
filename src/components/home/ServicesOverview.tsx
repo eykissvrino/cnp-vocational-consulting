@@ -14,6 +14,12 @@ const SERVICE_ACCENTS: Record<
     numColor: "rgba(26,107,114,0.08)",
     label: "HRM",
   },
+  "public-hr": {
+    color: "#334155",
+    bgLight: "rgba(51,65,85,0.06)",
+    numColor: "rgba(51,65,85,0.07)",
+    label: "공공HR",
+  },
   hrd: {
     color: "var(--color-primary)",
     bgLight: "rgba(224,123,57,0.06)",
@@ -63,7 +69,7 @@ export default function ServicesOverview() {
           initial="hidden"
           whileInView="show"
           viewport={{ once: true, amount: 0.15 }}
-          className="grid grid-cols-1 md:grid-cols-3 gap-6"
+          className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6"
         >
           {SERVICES_OVERVIEW.map((service) => {
             const accent = SERVICE_ACCENTS[service.id] ?? {
@@ -112,7 +118,7 @@ export default function ServicesOverview() {
                   </div>
 
                   {/* Title */}
-                  <h3 className="text-xl font-semibold text-navy mb-4 whitespace-nowrap">
+                  <h3 className="text-lg font-semibold text-navy mb-4">
                     {service.title}
                   </h3>
 
